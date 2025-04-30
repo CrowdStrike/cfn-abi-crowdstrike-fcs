@@ -491,13 +491,13 @@ Conditions:
     ]
   IsCommToGovCloudIOA:
     !And [
-      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "AWSAccountType", govcloud],
       !Equals [!Ref "FalconAccountType", govcloud],
       !Equals [!Ref "EnableIOA", true],
     ]
   IsCommToGovCloudGov1:
     !And [
-      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "AWSAccountType", govcloud],
       !Equals [!Ref "FalconAccountType", govcloud],
       !Equals [!Ref "CSCloud", "usgov1"],
     ]
@@ -508,7 +508,7 @@ Conditions:
     ]
   IsCommToGovCloud:
     !And [
-      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "AWSAccountType", govcloud],
       !Equals [!Ref "FalconAccountType", govcloud],
     ]
   SetPermissionsBoundary: !Not [!Equals [!Ref PermissionsBoundary, ""]]

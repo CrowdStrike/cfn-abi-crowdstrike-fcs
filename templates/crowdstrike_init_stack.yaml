@@ -1062,6 +1062,9 @@ Resources:
         PermissionsBoundary: !Ref PermissionsBoundary
         CSAccountNumber:
           !If [IsCommToGovCloudGov1, "287238819661", "188583992825"]
+        RoleName: !GetAtt TriggerRegisterAccountLambda.iam_role_name
+        ExternalID: !GetAtt TriggerRegisterAccountLambda.external_id
+        CSRoleName: !GetAtt TriggerRegisterAccountLambda.cs_role_name
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
 
   GovCrowdStrikeIOAStackSet:
@@ -1093,6 +1096,12 @@ Resources:
           ParameterValue: !Ref PermissionsBoundary
         - ParameterKey: CSAccountNumber
           ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_account_id
+        - ParameterKey: RoleName
+          ParameterValue: !GetAtt TriggerRegisterAccountLambda.iam_role_name
+        - ParameterKey: ExternalID
+          ParameterValue: !GetAtt TriggerRegisterAccountLambda.external_id
+        - ParameterKey: CSRoleName
+          ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_role_name
       PermissionModel: SERVICE_MANAGED
       CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       OperationPreferences:

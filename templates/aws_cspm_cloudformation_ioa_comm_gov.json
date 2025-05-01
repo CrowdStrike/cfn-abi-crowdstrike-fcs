@@ -2,6 +2,21 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Setup script to enable CrowdStrike Falcon CSPM.",
   "Parameters": {
+    "RoleName": {
+      "Description": "Read-only role for CrowdStrike Falcon CSPM",
+      "Type": "String",
+      "MinLength": "1"
+    },
+    "ExternalID": {
+      "Description": "External ID for created role",
+      "Type": "String",
+      "MinLength": "2"
+    },
+    "CSRoleName": {
+      "Description": "Name of Crowdstrike assuming role",
+      "Type": "String",
+      "MinLength": "10"
+    },
     "EnableIOA": {
       "Type": "String",
       "AllowedValues": [

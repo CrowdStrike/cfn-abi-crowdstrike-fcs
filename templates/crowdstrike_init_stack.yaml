@@ -1092,8 +1092,6 @@ Resources:
           ParameterValue: !Ref FalconSecret
         - ParameterKey: PermissionsBoundary
           ParameterValue: !Ref PermissionsBoundary
-        - ParameterKey: PermissionsBoundary
-          ParameterValue: !Ref PermissionsBoundary
         - ParameterKey: CSAccountNumber
           ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_account_id
         - ParameterKey: RoleName

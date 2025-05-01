@@ -166,7 +166,7 @@
         },
         "ManagedPolicyArns": [
           {
-            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/SecurityAudit"
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws-us-gov:policy/SecurityAudit"
           }
         ],
         "Policies": [
@@ -282,8 +282,8 @@
                 {
                   "Effect": "Allow",
                   "Resource": [
-                    "arn:aws:apigateway:*::/restapis/*",
-                    "arn:aws:apigateway:*::/apis/*"
+                    "arn:aws-us-gov:apigateway:*::/restapis/*",
+                    "arn:aws-us-gov:apigateway:*::/apis/*"
                   ],
                   "Action": [
                     "apigateway:Get"

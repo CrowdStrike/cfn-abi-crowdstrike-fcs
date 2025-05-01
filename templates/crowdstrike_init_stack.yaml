@@ -1063,6 +1063,53 @@ Resources:
         PermissionsBoundary: !Ref PermissionsBoundary
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
 
+
+GovCrowdStrikeIOAStackSet:
+    Type: "AWS::CloudFormation::StackSet"
+    Condition: IsGovCloudIOA
+    Properties:
+      Capabilities:
+        - CAPABILITY_IAM
+        - CAPABILITY_NAMED_IAM
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-GovIOAStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
+      Parameters:
+        - ParameterKey: ClientID
+          ParameterValue: !Ref FalconClientID
+        - ParameterKey: ClientSecret
+          ParameterValue: !Ref FalconSecret
+        - ParameterKey: PermissionsBoundary
+          ParameterValue: !Ref PermissionsBoundary
+      PermissionModel: SERVICE_MANAGED
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
+      OperationPreferences:
+        ConcurrencyMode: SOFT_FAILURE_TOLERANCE
+        MaxConcurrentPercentage: 100
+        FailureTolerancePercentage: 50
+        RegionConcurrencyType: PARALLEL
+      AutoDeployment:
+        Enabled: true
+        RetainStacksOnAccountRemoval: true
+      StackInstancesGroup:
+        - DeploymentTargets:
+            AccountFilterType: NONE
+            OrganizationalUnitIds: !Ref DeploymentScope
+          Regions:
+            - !Ref AWS::Region
+      TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
+
+
+
+
   # IOA StackSets
   CommCrowdStrikeEbStackSet:
     Type: "AWS::CloudFormation::StackSet"
@@ -1178,6 +1225,8 @@ Resources:
           Regions: !GetAtt TriggerRegisterAccountLambda.comm_gov_eb_regions
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_eb_comm_gov.json
 
+  
+
   CommGovCrowdStrikeIOAStackSet:
     Type: "AWS::CloudFormation::StackSet"
     Condition: IsCommToGovCloudIOA
@@ -1220,6 +1269,7 @@ Resources:
           Regions:
             - !Ref AWS::Region
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
+
 
   # CrowdStrike Registration
   CrowdStrikeSecrets:

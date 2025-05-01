@@ -1,4 +1,3 @@
----
 AWSTemplateFormatVersion: "2010-09-09"
 Description: "CrowdStrike Cloud Security Root Template. (abp-1kirFQBF75MfEQ3RbMQHRb-5NlayJp9WpX1krs2Aq7Koa-ln87vzuy)"
 
@@ -1063,8 +1062,7 @@ Resources:
         PermissionsBoundary: !Ref PermissionsBoundary
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
 
-
-GovCrowdStrikeIOAStackSet:
+  GovCrowdStrikeIOAStackSet:
     Type: "AWS::CloudFormation::StackSet"
     Condition: IsGovCloudIOA
     Properties:
@@ -1106,9 +1104,6 @@ GovCrowdStrikeIOAStackSet:
           Regions:
             - !Ref AWS::Region
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
-
-
-
 
   # IOA StackSets
   CommCrowdStrikeEbStackSet:
@@ -1225,8 +1220,6 @@ GovCrowdStrikeIOAStackSet:
           Regions: !GetAtt TriggerRegisterAccountLambda.comm_gov_eb_regions
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_eb_comm_gov.json
 
-  
-
   CommGovCrowdStrikeIOAStackSet:
     Type: "AWS::CloudFormation::StackSet"
     Condition: IsCommToGovCloudIOA
@@ -1269,7 +1262,6 @@ GovCrowdStrikeIOAStackSet:
           Regions:
             - !Ref AWS::Region
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
-
 
   # CrowdStrike Registration
   CrowdStrikeSecrets:

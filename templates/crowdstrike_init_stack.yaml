@@ -300,7 +300,7 @@ Parameters:
     Type: String
     Default: "false"
   ScheduleExpression:
-    Description: A cron expression that specifies a schedule when the association runs. The schedule runs in Coordinated Universal Time (UTC).
+    Description: A cron expression that specifies a schedule when the associationcs_ runs. The schedule runs in Coordinated Universal Time (UTC).
     Type: String
     Default: "cron(0 0 */1 * * ? *)"
   MaxErrors:
@@ -1060,6 +1060,8 @@ Resources:
         ClientID: !Ref FalconClientID
         ClientSecret: !Ref FalconSecret
         PermissionsBoundary: !Ref PermissionsBoundary
+        CSAccountNumber:
+          !If [IsCommToGovCloudGov1, "287238819661", "188583992825"]
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
 
   GovCrowdStrikeIOAStackSet:
@@ -1087,6 +1089,10 @@ Resources:
           ParameterValue: !Ref FalconSecret
         - ParameterKey: PermissionsBoundary
           ParameterValue: !Ref PermissionsBoundary
+        - ParameterKey: PermissionsBoundary
+          ParameterValue: !Ref PermissionsBoundary
+        - ParameterKey: CSAccountNumber
+          ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_account_id
       PermissionModel: SERVICE_MANAGED
       CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       OperationPreferences:

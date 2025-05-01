@@ -22,6 +22,12 @@
       "MinLength": "1",
       "NoEcho": "true"
     },
+    "CSAccountNumber": {
+      "Description": "Crowdstrike account number",
+      "Type": "String",
+      "MinLength": "12",
+      "MaxLength": "12"
+    },
     "UseExistingCloudtrail": {
       "Description": "When set to false, a CloudTrail resource is created which allows Horizon to consume non-mutating API events",
       "Type": "String",

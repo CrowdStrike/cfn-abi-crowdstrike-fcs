@@ -1055,7 +1055,7 @@ Resources:
 
   CommGovCrowdStrikeRootIOAStack:
     Type: "AWS::CloudFormation::Stack"
-    Condition: NotDelegatedAdminCommGovIOA
+    Condition: IsGovCloudIOA
     Properties:
       Parameters:
         ClientID: !Ref FalconClientID

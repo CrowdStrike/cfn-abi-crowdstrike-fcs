@@ -862,7 +862,8 @@
             "CS_GOV_COMMERCIAL": "true",
             "CS_AWS_REGION": {
               "Fn::Sub": "${AWS::Region}"
-            }
+            },
+            "PARTITION": ":aws-us-gov:"
           }
         },
         "FunctionName": "cs-lambda-registration",
@@ -878,25 +879,6 @@
         "Runtime": "provided.al2"
       },
       "DependsOn": "CrowdStrikeLambdaRegistrationLogGroup"
-    },
-    "CrowdStrikeLambdaRegistrationInvoke": {
-      "Type": "AWS::CloudFormation::CustomResource",
-      "Version": "1.0",
-      "Condition": "ShouldCreateIOAResources",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "CrowdStrikeLambdaRegistration",
-            "Arn"
-          ]
-        },
-        "EventBus": {
-          "Fn::Sub": "arn:aws-us-gov:events:${AWS::Region}:${AWS::AccountId}:event-bus/default"
-        },
-        "LambdaAlias": {
-          "Ref": "CrowdStrikeLambdaEventBridgeAlias"
-        }
-      }
     }
   }
 }

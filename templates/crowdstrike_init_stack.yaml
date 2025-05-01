@@ -1060,8 +1060,7 @@ Resources:
         ClientID: !Ref FalconClientID
         ClientSecret: !Ref FalconSecret
         PermissionsBoundary: !Ref PermissionsBoundary
-        CSAccountNumber:
-          !If [IsCommToGovCloudGov1, "287238819661", "188583992825"]
+        CSAccountNumber: !GetAtt TriggerRegisterAccountLambda.cs_account_id
         RoleName: !GetAtt TriggerRegisterAccountLambda.iam_role_name
         ExternalID: !GetAtt TriggerRegisterAccountLambda.external_id
         CSRoleName: !GetAtt TriggerRegisterAccountLambda.cs_role_name

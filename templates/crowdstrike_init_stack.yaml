@@ -1,11 +1,11 @@
 ---
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Description: "CrowdStrike Cloud Security Root Template. (abp-1kirFQBF75MfEQ3RbMQHRb-5NlayJp9WpX1krs2Aq7Koa-ln87vzuy)"
 
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
-      - Label: 
+      - Label:
           default: Falcon CID Details
         Parameters:
           - FalconAccountType
@@ -78,7 +78,6 @@ Metadata:
           - Registry
           - Backend
           - EnableKAC
-      
 
     ParameterLabels:
       # Account Type
@@ -202,40 +201,40 @@ Parameters:
   FalconAccountType:
     Type: String
     AllowedValues:
-      - 'commercial'
-      - 'govcloud'
-    Default: 'commercial'
+      - "commercial"
+      - "govcloud"
+    Default: "commercial"
   AWSAccountType:
     Type: String
     AllowedValues:
-      - 'commercial'
-      - 'govcloud'
-    Default: 'commercial'
+      - "commercial"
+      - "govcloud"
+    Default: "commercial"
 
   # Permissions Boundary
   PermissionsBoundary:
     Type: String
     Description: The name of the policy used to set the permissions boundary for IAM roles.
-    Default: ''
-  
+    Default: ""
+
   # CrowdStrike Falcon API Key
   FalconClientID:
     Description: Your Falcon OAuth2 Client ID.
-    NoEcho: 'true'
+    NoEcho: "true"
     Type: String
   FalconSecret:
     Description: Your Falcon OAuth2 API Secret.
-    NoEcho: 'true'
+    NoEcho: "true"
     Type: String
   CSCloud:
     Type: String
     Default: us1
-    AllowedValues: 
-      - 'us1'
-      - 'us2'
-      - 'eu1'
-      - 'usgov1'
-      - 'usgov2'
+    AllowedValues:
+      - "us1"
+      - "us2"
+      - "eu1"
+      - "usgov1"
+      - "usgov2"
     Description: The Cloud your CID is hosted in
 
   # Configure Indicator of Attack Scanning
@@ -243,82 +242,82 @@ Parameters:
     Type: String
     Description: Set IOA Scanning
     AllowedValues:
-      - 'true'
-      - 'false'
-    Default: 'true'
+      - "true"
+      - "false"
+    Default: "true"
   CreateIOAOrgTrail:
     Type: String
-    Description: 'Output cs_bucket_name to set up Organization CloudTrail and enable ReadOnly IOAs.'
+    Description: "Output cs_bucket_name to set up Organization CloudTrail and enable ReadOnly IOAs."
     AllowedValues:
-      - 'true'
-      - 'false'
-    Default: 'false'
+      - "true"
+      - "false"
+    Default: "false"
   ExcludeRegions:
     Description: Exclude regions from EventBridge Rules for IOA.  Use this when SCPs cause stacksets to fail.
     Type: String
-    Default: ''
+    Default: ""
   EnableIDP:
     Description: Enable Identity Protection
     Type: String
     AllowedValues:
-      - 'True'
-      - 'False'
-    Default: 'False'
+      - "True"
+      - "False"
+    Default: "False"
 
   # Sensor Management
   EnableSensorManagement:
     Type: String
     Description: Enable Automatic Sensor Deployment via AWS SSM and/or Ansible.
     AllowedValues:
-      - 'true'
-      - 'false'
-    Default: 'true'
+      - "true"
+      - "false"
+    Default: "true"
   APICredentialsStorageMode:
     Type: String
     Description: How Falcon API credentials are stored for Sensor Management. 'lambda' stores them in the lambda environment variables, 'secret' in an AWS secret.
-    Default: 'secret'
-    AllowedValues: ['lambda', 'secret']
+    Default: "secret"
+    AllowedValues: ["lambda", "secret"]
 
   # Provision OUs
   DeploymentScope:
     Type: CommaDelimitedList
     Description: Comma Delimited List of OU(s) to provision resources.  If you are onboarding the entire Organization, please enter the Root OU (r-****)
-    AllowedPattern: '^r-[0-9a-z]{4,32}$|^(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32},)*(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})$'
+    AllowedPattern: "^r-[0-9a-z]{4,32}$|^(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32},)*(ou-[0-9a-z]{4,32}-[a-z0-9]{8,32})$"
 
   # Deploy Falcon Sensors with SSM Distributor
   EnableSSMDistributor:
     Type: String
     Description: Deploy Associations in each account to automatically install Falcon Sensors against SSM-Managed Instances.
     AllowedValues:
-      - 'true'
-      - 'false'
-    Default: 'false'
+      - "true"
+      - "false"
+    Default: "false"
   AutomationAssumeRole:
     Type: String
-    Default: 'crowdstrike-distributor-deploy-role'
-    Description: 'Execution Role for CrowdStrike SSM Distributor Package'
+    Default: "crowdstrike-distributor-deploy-role"
+    Description: "Execution Role for CrowdStrike SSM Distributor Package"
   ApplyOnlyAtCronInterval:
     Description: By default, when you create a new association, the system runs it immediately after it is created and then according to the schedule you specified. Specify true if you don't want an association to run immediately after you create it. .
     Type: String
-    Default: 'false'
+    Default: "false"
   ScheduleExpression:
     Description: A cron expression that specifies a schedule when the association runs. The schedule runs in Coordinated Universal Time (UTC).
     Type: String
-    Default: 'cron(0 0 */1 * * ? *)'
+    Default: "cron(0 0 */1 * * ? *)"
   MaxErrors:
     Description: The number of errors that are allowed before the system stops sending requests to run the association on additional targets. You can specify either an absolute number of errors, for example 10, or a percentage of the target set, for example 10%.
     Type: String
-    Default: '10%'
+    Default: "10%"
   MaxConcurrency:
     Description: The maximum number of targets allowed to run the association at the same time. You can specify a number, for example 10, or a percentage of the target set, for example 10%. The default value is 100%, which means all targets run the association at the same time.
     Type: String
-    Default: '20%'
+    Default: "20%"
   DocumentVersion:
     Description: The version of the SSM document to associate with the target.
     Type: String
-    Default: '2'
-    AllowedPattern: '([$]LATEST|[$]DEFAULT|^[1-9][0-9]*$)'
-  
+    Default: "2"
+    AllowedPattern: "([$]LATEST|[$]DEFAULT|^[1-9][0-9]*$)"
+
   # AWS S3 Bucket
   SourceS3BucketName:
     AllowedPattern: ^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$
@@ -337,10 +336,9 @@ Parameters:
 
   # Advanced Configuration Properties
   DelegatedAdmin:
-    AllowedValues: ['true', 'false']
-    Default: 'false'
-    Description:
-      Indicates whether this is a Delegated Administrator account.
+    AllowedValues: ["true", "false"]
+    Default: "false"
+    Description: Indicates whether this is a Delegated Administrator account.
     Type: String
 
   # Create Organization CloudTrail
@@ -348,14 +346,13 @@ Parameters:
     Type: String
     Description: Create org-wide trail, bucket, and bucket policy to enable EventBridge event collection.  If you already have either an Organization CloudTrail or CloudTrails enabled in each account, please leave this parameter false.
     AllowedValues:
-      - 'true'
-      - 'false'
-    Default: 'false'
+      - "true"
+      - "false"
+    Default: "false"
   pControlTower:
-    AllowedValues: ['true', 'false']
-    Default: 'true'
-    Description:
-      Indicates whether AWS Control Tower is deployed and being used for this AWS environment.
+    AllowedValues: ["true", "false"]
+    Default: "true"
+    Description: Indicates whether AWS Control Tower is deployed and being used for this AWS environment.
     Type: String
   pSecurityAccountId:
     AllowedPattern: '^\d{12}$'
@@ -371,8 +368,7 @@ Parameters:
     Type: String
   pGovernedRegions:
     AllowedPattern: '^(ct-regions)|((\b(?<!@)(af-south-1|ap-east-1|ap-northeast-1|ap-northeast-2|ap-northeast-3|ap-south-1|ap-south-2|ap-southeast-1|ap-southeast-2|ap-southeast-3|ap-southeast-4|ca-central-1|cn-north-1|cn-northwest-1|eu-central-1|eu-central-2|eu-north-1|eu-south-1|eu-south-2|eu-west-1|eu-west-2|eu-west-3|me-central-1|me-south-1|sa-east-1|us-east-1|us-east-2|us-gov-east-1|us-gov-west-1|us-west-1|us-west-2)\b,{0,1})*)$'
-    ConstraintDescription:
-      For AWS Control Tower, set to ct-regions (default).  If not using AWS Control Tower, specify comma separated list of regions (e.g. us-west-2,us-east-1,ap-south-1) in lower case.
+    ConstraintDescription: For AWS Control Tower, set to ct-regions (default).  If not using AWS Control Tower, specify comma separated list of regions (e.g. us-west-2,us-east-1,ap-south-1) in lower case.
     Default: ct-regions
     Description: AWS regions (comma separated) if not using AWS Control Tower (leave set to ct-regions for AWS Control Tower environments)
     Type: String
@@ -388,9 +384,9 @@ Parameters:
   # EKS Protection
   EKSProtection:
     Type: String
-    AllowedValues: ['true', 'false']
+    AllowedValues: ["true", "false"]
     Description: Enable CrowdStrike EKS Protection to automatically deploy Falcon Sensor against EKS Clusters.
-    Default: 'false'
+    Default: "false"
   FalconCID:
     Type: String
     Description: Your Falcon CID with checksum (eg. ********************************-**)
@@ -428,15 +424,15 @@ Parameters:
     Type: String
     Description: Source Falcon Image from CrowdStrike or mirror to ECR
     AllowedValues:
-      - 'crowdstrike'
-      - 'ecr'
+      - "crowdstrike"
+      - "ecr"
     Default: crowdstrike
   Backend:
     Type: String
     Description: kernel or bpf for Daemonset Sensor
     AllowedValues:
-      - 'kernel'
-      - 'bpf'
+      - "kernel"
+      - "bpf"
     Default: kernel
   EnableKAC:
     Type: String
@@ -457,83 +453,149 @@ Parameters:
   ECRExecutionRoleName:
     Type: String
     Description: The name of the role that will be used for Lambda execution.
-    Default: 'crowdstrike-ecr-lambda-role'
+    Default: "crowdstrike-ecr-lambda-role"
   ECRLambdaName:
     Type: String
     Description: The name of the lambda function used to register ECR registry connections.
-    Default: 'crowdstrike-ecr-function'
+    Default: "crowdstrike-ecr-function"
 
-Mappings: 
-  CloudMap: 
-    us1: 
+Mappings:
+  CloudMap:
+    us1:
       BaseURL: "https://api.crowdstrike.com"
       CrowdStrikeCloud: us-1
-    us2: 
+    us2:
       BaseURL: "https://api.us-2.crowdstrike.com"
       CrowdStrikeCloud: us-2
-    eu1: 
+    eu1:
       BaseURL: "https://api.eu-1.crowdstrike.com"
       CrowdStrikeCloud: eu-1
 
 Conditions:
-  CreateIOAResources: !Equals [ !Ref 'EnableIOA', true ]
-  CreateIOATrail: !Equals [ !Ref 'CreateIOAOrgTrail', true ]
-  CreateOrgTrail: !Equals [ !Ref 'CreateSRAOrgTrail', true ]
-  ExcludeRegionsEmpty:  !Equals [!Ref 'ExcludeRegions', '']
-  CreateSSMAssociations: !Equals [ !Ref 'EnableSSMDistributor', true ]
-  IsCommercialIOA: !And [!Equals [ !Ref 'AWSAccountType', commercial ], !Equals [ !Ref 'FalconAccountType', commercial ], !Equals [!Ref 'EnableIOA', true ]]
-  IsGovCloudIOA: !And [!Equals [ !Ref 'AWSAccountType', govcloud ], !Equals [ !Ref 'FalconAccountType', govcloud ], !Equals [!Ref 'EnableIOA', true ]]
-  IsCommToGovCloudIOA: !And [!Equals [ !Ref 'AWSAccountType', commercial ], !Equals [ !Ref 'FalconAccountType', govcloud ], !Equals [!Ref 'EnableIOA', true ]]
-  IsCommToGovCloudGov1: !And [!Equals [ !Ref 'AWSAccountType', commercial ], !Equals [ !Ref 'FalconAccountType', govcloud ], !Equals [!Ref 'CSCloud', 'usgov1' ]]
-  IsCommToComm: !And [ !Equals [ !Ref 'AWSAccountType', commercial ], !Equals [ !Ref 'FalconAccountType', commercial ]]
-  IsCommToGovCloud: !And [!Equals [ !Ref 'AWSAccountType', commercial ], !Equals [ !Ref 'FalconAccountType', govcloud ]]
-  SetPermissionsBoundary: !Not [ !Equals [ !Ref PermissionsBoundary, '' ]]
-  IsDelegatedAdmin: !Equals [ !Ref 'DelegatedAdmin', true ]
-  NotDelegatedAdminCommIOA: !And [ !Equals [ !Ref 'DelegatedAdmin', false ], !Equals [ !Ref 'AWSAccountType', commercial ], !Equals [ !Ref 'FalconAccountType', commercial ], !Equals [!Ref 'EnableIOA', true ]]
-  NotDelegatedAdminGovIOA: !And [ !Equals [ !Ref 'DelegatedAdmin', false ], !Equals [ !Ref 'AWSAccountType', govcloud ], !Equals [ !Ref 'FalconAccountType', govcloud ], !Equals [!Ref 'EnableIOA', true ]]
-  NotDelegatedAdminCommGovIOA: !And [!Equals [ !Ref 'DelegatedAdmin', false ], !Equals [ !Ref 'AWSAccountType', commercial ], !Equals [ !Ref 'FalconAccountType', govcloud ], !Equals [!Ref 'EnableIOA', true ]]
-  EnableEKSProtection: !Equals [ !Ref 'EKSProtection', true ]
-  EnableECRRegistration: !Equals [ !Ref 'ECRConnections', true ]
+  CreateIOAResources: !Equals [!Ref "EnableIOA", true]
+  CreateIOATrail: !Equals [!Ref "CreateIOAOrgTrail", true]
+  CreateOrgTrail: !Equals [!Ref "CreateSRAOrgTrail", true]
+  ExcludeRegionsEmpty: !Equals [!Ref "ExcludeRegions", ""]
+  CreateSSMAssociations: !Equals [!Ref "EnableSSMDistributor", true]
+  IsCommercialIOA:
+    !And [
+      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "FalconAccountType", commercial],
+      !Equals [!Ref "EnableIOA", true],
+    ]
+  IsGovCloudIOA:
+    !And [
+      !Equals [!Ref "AWSAccountType", govcloud],
+      !Equals [!Ref "FalconAccountType", govcloud],
+      !Equals [!Ref "EnableIOA", true],
+    ]
+  IsCommToGovCloudIOA:
+    !And [
+      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "FalconAccountType", govcloud],
+      !Equals [!Ref "EnableIOA", true],
+    ]
+  IsCommToGovCloudGov1:
+    !And [
+      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "FalconAccountType", govcloud],
+      !Equals [!Ref "CSCloud", "usgov1"],
+    ]
+  IsCommToComm:
+    !And [
+      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "FalconAccountType", commercial],
+    ]
+  IsCommToGovCloud:
+    !And [
+      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "FalconAccountType", govcloud],
+    ]
+  SetPermissionsBoundary: !Not [!Equals [!Ref PermissionsBoundary, ""]]
+  IsDelegatedAdmin: !Equals [!Ref "DelegatedAdmin", true]
+  NotDelegatedAdminCommIOA:
+    !And [
+      !Equals [!Ref "DelegatedAdmin", false],
+      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "FalconAccountType", commercial],
+      !Equals [!Ref "EnableIOA", true],
+    ]
+  NotDelegatedAdminGovIOA:
+    !And [
+      !Equals [!Ref "DelegatedAdmin", false],
+      !Equals [!Ref "AWSAccountType", govcloud],
+      !Equals [!Ref "FalconAccountType", govcloud],
+      !Equals [!Ref "EnableIOA", true],
+    ]
+  NotDelegatedAdminCommGovIOA:
+    !And [
+      !Equals [!Ref "DelegatedAdmin", false],
+      !Equals [!Ref "AWSAccountType", commercial],
+      !Equals [!Ref "FalconAccountType", govcloud],
+      !Equals [!Ref "EnableIOA", true],
+    ]
+  EnableEKSProtection: !Equals [!Ref "EKSProtection", true]
+  EnableECRRegistration: !Equals [!Ref "ECRConnections", true]
 
 Resources:
-# Optional Default Organization CloudTrail
+  # Optional Default Organization CloudTrail
   CloudTrailStack:
-      Type: 'AWS::CloudFormation::Stack'
-      Condition: CreateOrgTrail
-      DeletionPolicy: Delete
-      UpdateReplacePolicy: Delete
-      Properties:
-        TemplateURL: !Sub >-
-          https://${SourceS3BucketName}.s3.${S3BucketRegion}.${AWS::URLSuffix}/${SourceS3BucketNamePrefix}/submodules/aws-security-reference-architecture-examples/aws_sra_examples/modules/cloudtrail-org-module/templates/sra-cloudtrail-org-module-main.yaml
-        Parameters:
-          pRepoURL: !Ref pRepoURL
-          pRepoBranch: !Ref pRepoBranch
-          pEnableDataEventsOnly: false
-          pControlTower: !Ref pControlTower
-          pGovernedRegions: !Ref pGovernedRegions
-          pSecurityAccountId: !Ref pSecurityAccountId
-          pLogArchiveAccountId: !Ref pLogArchiveAccountId
+    Type: "AWS::CloudFormation::Stack"
+    Condition: CreateOrgTrail
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      TemplateURL: !Sub >-
+        https://${SourceS3BucketName}.s3.${S3BucketRegion}.${AWS::URLSuffix}/${SourceS3BucketNamePrefix}/submodules/aws-security-reference-architecture-examples/aws_sra_examples/modules/cloudtrail-org-module/templates/sra-cloudtrail-org-module-main.yaml
+      Parameters:
+        pRepoURL: !Ref pRepoURL
+        pRepoBranch: !Ref pRepoBranch
+        pEnableDataEventsOnly: false
+        pControlTower: !Ref pControlTower
+        pGovernedRegions: !Ref pGovernedRegions
+        pSecurityAccountId: !Ref pSecurityAccountId
+        pLogArchiveAccountId: !Ref pLogArchiveAccountId
 
-# Create SSM Distributor Associations
+  # Create SSM Distributor Associations
   AssociationStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: CreateSSMAssociations
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-SSMAssociationStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-SSMAssociationStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Description: Create SSM State Manager Association to automatically manage Falcon Sensor installation across SSM Managed Instances
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       ManagedExecution:
         Active: true
       Parameters:
         - ParameterKey: DocumentVersion
           ParameterValue: !Ref DocumentVersion
         - ParameterKey: SecretsManagerSecretName
-          ParameterValue: !Join ['-', ['cs-abi-FalconAPI-SSM', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+          ParameterValue:
+            !Join [
+              "-",
+              [
+                "cs-abi-FalconAPI-SSM",
+                !Select [
+                  4,
+                  !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+                ],
+              ],
+            ]
         - ParameterKey: SecretStorageMethod
-          ParameterValue: 'SecretsManager'
+          ParameterValue: "SecretsManager"
         - ParameterKey: Action
-          ParameterValue: 'Install'
+          ParameterValue: "Install"
         - ParameterKey: ScheduleExpression
           ParameterValue: !Ref ScheduleExpression
         - ParameterKey: MaxErrors
@@ -564,15 +626,25 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/ssm-association-stackset.yml
 
   SSMSetupStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: CreateSSMAssociations
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-SSMSetupStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-SSMSetupStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Description: Securely store Falcon credentials and create AWS IAM role to assume when running the AWS Systems Manager Automation document.
       Capabilities:
-       - CAPABILITY_NAMED_IAM
+        - CAPABILITY_NAMED_IAM
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       ManagedExecution:
         Active: true
       Parameters:
@@ -592,14 +664,14 @@ Resources:
         - DeploymentTargets:
             AccountFilterType: NONE
             OrganizationalUnitIds: !Ref DeploymentScope
-          Regions: 
+          Regions:
             - !Ref AWS::Region
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/ssm-setup-stackset.yml
 
-# Create CSPM Stack and StackSet
+  # Create CSPM Stack and StackSet
   CrowdStrikeCSPMStack:
     Condition: IsCommToComm
-    Type: 'AWS::CloudFormation::Stack'
+    Type: "AWS::CloudFormation::Stack"
     Properties:
       Parameters:
         RoleName: !GetAtt TriggerRegisterAccountLambda.iam_role_name
@@ -615,26 +687,37 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_v2.json
   CrowdStrikeCommGovCSPMStack:
     Condition: IsCommToGovCloud
-    Type: 'AWS::CloudFormation::Stack'
+    Type: "AWS::CloudFormation::Stack"
     Properties:
       Parameters:
         RoleName: !GetAtt TriggerRegisterAccountLambda.iam_role_name
         ExternalID: !GetAtt TriggerRegisterAccountLambda.external_id
         CSRoleName: !GetAtt TriggerRegisterAccountLambda.cs_role_name
-        CSAccountNumber: !If [IsCommToGovCloudGov1, '287238819661', '188583992825']
+        CSAccountNumber:
+          !If [IsCommToGovCloudGov1, "287238819661", "188583992825"]
         EnableIOA: !Ref EnableIOA
         EnableSensorManagement: !Ref EnableSensorManagement
         APICredentialsStorageMode: !Ref APICredentialsStorageMode
         ClientID: !Ref FalconClientID
         ClientSecret: !Ref FalconSecret
         PermissionsBoundary: !Ref PermissionsBoundary
-        CreateEventBridgeRole: 'false'
+        CreateEventBridgeRole: "false"
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_v2.json
   CrowdStrikeStackSet:
     Condition: IsCommToComm
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-CloudSecurityStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-CloudSecurityStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Capabilities:
         - CAPABILITY_IAM
         - CAPABILITY_NAMED_IAM
@@ -661,7 +744,7 @@ Resources:
         - ParameterKey: PermissionsBoundary
           ParameterValue: !Ref PermissionsBoundary
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: true
@@ -674,14 +757,24 @@ Resources:
         - DeploymentTargets:
             AccountFilterType: NONE
             OrganizationalUnitIds: !Ref DeploymentScope
-          Regions: 
+          Regions:
             - !Ref AWS::Region
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_v2.json
   CrowdStrikeCommGovStackSet:
     Condition: IsCommToGovCloud
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-CloudSecurityStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-CloudSecurityStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Capabilities:
         - CAPABILITY_IAM
         - CAPABILITY_NAMED_IAM
@@ -694,7 +787,8 @@ Resources:
         - ParameterKey: CSRoleName
           ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_role_name
         - ParameterKey: CSAccountNumber
-          ParameterValue: !If [IsCommToGovCloudGov1, '287238819661', '188583992825']
+          ParameterValue:
+            !If [IsCommToGovCloudGov1, "287238819661", "188583992825"]
         - ParameterKey: EnableIOA
           ParameterValue: !Ref EnableIOA
         - ParameterKey: EnableSensorManagement
@@ -708,9 +802,9 @@ Resources:
         - ParameterKey: PermissionsBoundary
           ParameterValue: !Ref PermissionsBoundary
         - ParameterKey: CreateEventBridgeRole
-          ParameterValue: 'false'
+          ParameterValue: "false"
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: true
@@ -723,11 +817,11 @@ Resources:
         - DeploymentTargets:
             AccountFilterType: NONE
             OrganizationalUnitIds: !Ref DeploymentScope
-          Regions: 
+          Regions:
             - !Ref AWS::Region
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_v2.json
 
-# Optional: Create EventBridge Roles & StackSet
+  # Optional: Create EventBridge Roles & StackSet
   StackSetAdministrationRole:
     Type: AWS::IAM::Role
     Condition: CreateIOAResources
@@ -735,24 +829,51 @@ Resources:
       PermissionsBoundary:
         Fn::If:
           - SetPermissionsBoundary
-          - !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}'
+          - !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}"
           - Ref: AWS::NoValue
-      RoleName: !Join ['-', ['cs-abi-StackSetAdminRole', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      RoleName:
+        !Join [
+          "-",
+          [
+            "cs-abi-StackSetAdminRole",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           Action: sts:AssumeRole
           Principal:
             Service: cloudformation.amazonaws.com
           Effect: Allow
-          Sid: ''
+          Sid: ""
       Policies:
         - PolicyName: crowdstrike-stackset-execution
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Action: sts:AssumeRole
-                Resource: !Join ['', ['arn:', !Ref AWS::Partition, ':iam::', !Ref AWS::AccountId, ':role/cs-abi-StackSetExecRole-', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+                Resource:
+                  !Join [
+                    "",
+                    [
+                      "arn:",
+                      !Ref AWS::Partition,
+                      ":iam::",
+                      !Ref AWS::AccountId,
+                      ":role/cs-abi-StackSetExecRole-",
+                      !Select [
+                        4,
+                        !Split [
+                          "-",
+                          !Select [2, !Split ["/", !Ref AWS::StackId]],
+                        ],
+                      ],
+                    ],
+                  ]
                 Effect: Allow
   StackSetExecutionRole:
     Type: AWS::IAM::Role
@@ -773,51 +894,71 @@ Resources:
       PermissionsBoundary:
         Fn::If:
           - SetPermissionsBoundary
-          - !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}'
+          - !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}"
           - Ref: AWS::NoValue
-      RoleName: !Join ['-', ['cs-abi-StackSetExecRole', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      RoleName:
+        !Join [
+          "-",
+          [
+            "cs-abi-StackSetExecRole",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           Action: sts:AssumeRole
           Principal:
             AWS: !GetAtt StackSetAdministrationRole.Arn
           Effect: Allow
-          Sid: ''
+          Sid: ""
       Policies:
         - PolicyName: crowdstrike-stackset-execution
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Action:
-                - events:DeleteRule
-                - events:PutTargets
-                - events:DescribeRule
-                - iam:PassRole
-                - events:EnableRule
-                - events:PutRule
-                - events:RemoveTargets
-                - events:DisableRule
+                  - events:DeleteRule
+                  - events:PutTargets
+                  - events:DescribeRule
+                  - iam:PassRole
+                  - events:EnableRule
+                  - events:PutRule
+                  - events:RemoveTargets
+                  - events:DisableRule
                 Resource:
-                - !Sub arn:${AWS::Partition}:events:*:*:rule/cs-*
-                - !Sub arn:${AWS::Partition}:events:*:*:rule/*/cs-*
-                - !Sub arn:${AWS::Partition}:iam::*:role/CrowdStrike*
+                  - !Sub arn:${AWS::Partition}:events:*:*:rule/cs-*
+                  - !Sub arn:${AWS::Partition}:events:*:*:rule/*/cs-*
+                  - !Sub arn:${AWS::Partition}:iam::*:role/CrowdStrike*
                 Effect: Allow
               - Action: cloudformation:*
-                Resource: '*'
+                Resource: "*"
                 Effect: Allow
               - Action: s3:*
-                Resource: !Sub 'arn:${AWS::Partition}:s3:::cfn-abi-crowdstrike-fcs-*'
+                Resource: !Sub "arn:${AWS::Partition}:s3:::cfn-abi-crowdstrike-fcs-*"
                 Effect: Allow
 
   # Root IOA StackSets
   CommCrowdStrikeRootEbStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: NotDelegatedAdminCommIOA
     Properties:
       AdministrationRoleARN: !GetAtt StackSetAdministrationRole.Arn
       ExecutionRoleName: !Ref StackSetExecutionRole
-      StackSetName: !Join ['-', ['cs-abi-RootEBStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-RootEBStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Parameters:
         - ParameterKey: CSAccountNumber
           ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_account_id
@@ -838,12 +979,22 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_eb_v2.json
 
   GovCrowdStrikeRootEbStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: NotDelegatedAdminGovIOA
     Properties:
       AdministrationRoleARN: !GetAtt StackSetAdministrationRole.Arn
       ExecutionRoleName: !Ref StackSetExecutionRole
-      StackSetName: !Join ['-', ['cs-abi-RootEBStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-RootEBStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Parameters:
         - ParameterKey: CSAccountNumber
           ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_account_id
@@ -866,7 +1017,7 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_eb_v2.json
 
   CommGovCrowdStrikeRootEbStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: NotDelegatedAdminCommGovIOA
     Properties:
       Capabilities:
@@ -874,7 +1025,17 @@ Resources:
         - CAPABILITY_NAMED_IAM
       AdministrationRoleARN: !GetAtt StackSetAdministrationRole.Arn
       ExecutionRoleName: !Ref StackSetExecutionRole
-      StackSetName: !Join ['-', ['cs-abi-RootEBStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-RootEBStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Parameters:
         - ParameterKey: DefaultEventBusRegion
           ParameterValue: !Ref AWS::Region
@@ -893,7 +1054,7 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_eb_comm_gov.json
 
   CommGovCrowdStrikeRootIOAStack:
-    Type: 'AWS::CloudFormation::Stack'
+    Type: "AWS::CloudFormation::Stack"
     Condition: NotDelegatedAdminCommGovIOA
     Properties:
       Parameters:
@@ -901,20 +1062,30 @@ Resources:
         ClientSecret: !Ref FalconSecret
         PermissionsBoundary: !Ref PermissionsBoundary
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
-  
+
   # IOA StackSets
   CommCrowdStrikeEbStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: IsCommercialIOA
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-MemberEBStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-MemberEBStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Parameters:
         - ParameterKey: CSAccountNumber
           ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_account_id
         - ParameterKey: CSEventBusName
           ParameterValue: !GetAtt TriggerRegisterAccountLambda.eventbus_name
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: true
@@ -931,10 +1102,20 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_eb_v2.json
 
   GovCrowdStrikeEbStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: IsGovCloudIOA
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-MemberEBStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-MemberEBStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Parameters:
         - ParameterKey: CSAccountNumber
           ParameterValue: !GetAtt TriggerRegisterAccountLambda.cs_account_id
@@ -943,13 +1124,13 @@ Resources:
         - ParameterKey: AWSAccountType
           ParameterValue: !Ref AWSAccountType
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       OperationPreferences:
         ConcurrencyMode: SOFT_FAILURE_TOLERANCE
         MaxConcurrentPercentage: 100
         FailureTolerancePercentage: 50
         RegionConcurrencyType: PARALLEL
-      AutoDeployment: 
+      AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: true
       StackInstancesGroup:
@@ -960,24 +1141,34 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_eb_v2.json
 
   CommGovCrowdStrikeEbStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: IsCommToGovCloudIOA
     Properties:
       Capabilities:
         - CAPABILITY_IAM
         - CAPABILITY_NAMED_IAM
-      StackSetName: !Join ['-', ['cs-abi-MemberEBStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-MemberEBStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Parameters:
         - ParameterKey: DefaultEventBusRegion
           ParameterValue: !Ref AWS::Region
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       OperationPreferences:
         ConcurrencyMode: SOFT_FAILURE_TOLERANCE
         MaxConcurrentPercentage: 100
         FailureTolerancePercentage: 50
         RegionConcurrencyType: PARALLEL
-      AutoDeployment: 
+      AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: true
       StackInstancesGroup:
@@ -988,13 +1179,23 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_eb_comm_gov.json
 
   CommGovCrowdStrikeIOAStackSet:
-    Type: 'AWS::CloudFormation::StackSet'
+    Type: "AWS::CloudFormation::StackSet"
     Condition: IsCommToGovCloudIOA
     Properties:
       Capabilities:
         - CAPABILITY_IAM
         - CAPABILITY_NAMED_IAM
-      StackSetName: !Join ['-', ['cs-abi-CommGovIOAStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-CommGovIOAStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Parameters:
         - ParameterKey: ClientID
           ParameterValue: !Ref FalconClientID
@@ -1003,20 +1204,20 @@ Resources:
         - ParameterKey: PermissionsBoundary
           ParameterValue: !Ref PermissionsBoundary
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       OperationPreferences:
         ConcurrencyMode: SOFT_FAILURE_TOLERANCE
         MaxConcurrentPercentage: 100
         FailureTolerancePercentage: 50
         RegionConcurrencyType: PARALLEL
-      AutoDeployment: 
+      AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: true
       StackInstancesGroup:
         - DeploymentTargets:
             AccountFilterType: NONE
             OrganizationalUnitIds: !Ref DeploymentScope
-          Regions: 
+          Regions:
             - !Ref AWS::Region
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/aws_cspm_cloudformation_ioa_comm_gov.json
 
@@ -1030,10 +1231,20 @@ Resources:
             comment: The default key aws/secretsmanager is sufficient to secure this resource
     Properties:
       Description: CrowdStrike Credentials
-      Name: !Join ['-', ['cs-abi-FalconAPI', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      Name:
+        !Join [
+          "-",
+          [
+            "cs-abi-FalconAPI",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       SecretString:
         Fn::Join:
-          - ''
+          - ""
           - - '{"FalconClientId":"'
             - Ref: "FalconClientID"
             - '","FalconSecret": "'
@@ -1043,20 +1254,30 @@ Resources:
   LambdaCrowdStrikeRegistrationRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Join ['-', ['cs-abi-RegistrationRole', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      RoleName:
+        !Join [
+          "-",
+          [
+            "cs-abi-RegistrationRole",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       PermissionsBoundary:
         Fn::If:
           - SetPermissionsBoundary
-          - !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}'
+          - !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}"
           - Ref: AWS::NoValue
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
-            Condition: { }
+            Condition: {}
       Path: /
       Policies:
         - PolicyName: CrowdStrikeApiSecretPolicy
@@ -1065,13 +1286,13 @@ Resources:
             Statement:
               - Effect: Allow
                 Action:
-                  - 'secretsmanager:GetSecretValue'
+                  - "secretsmanager:GetSecretValue"
                 Resource:
                   - !Ref CrowdStrikeSecrets
       ManagedPolicyArns:
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AWSOrganizationsReadOnlyAccess'
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ReadOnlyAccess'
+        - !Sub "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        - !Sub "arn:${AWS::Partition}:iam::aws:policy/AWSOrganizationsReadOnlyAccess"
+        - !Sub "arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ReadOnlyAccess"
 
   RegisterAccountLambda:
     Type: AWS::Lambda::Function
@@ -1099,25 +1320,45 @@ Resources:
       Environment:
         Variables:
           secret_region: !Ref AWS::Region
-          secret_name: !Join ['-', ['cs-abi-FalconAPI', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+          secret_name:
+            !Join [
+              "-",
+              [
+                "cs-abi-FalconAPI",
+                !Select [
+                  4,
+                  !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+                ],
+              ],
+            ]
           cs_cloud: !Ref CSCloud
           aws_account_type: !Ref AWSAccountType
           falcon_account_type: !Ref FalconAccountType
-          existing_cloudtrail: !If [ CreateIOATrail, 'False', 'True' ]
-          enable_dspm: 'True'
+          existing_cloudtrail: !If [CreateIOATrail, "False", "True"]
+          enable_dspm: "True"
           identity_protection: !Ref EnableIDP
       Handler: lambda.lambda_handler
       MemorySize: 128
       Role: !GetAtt "LambdaCrowdStrikeRegistrationRole.Arn"
       Runtime: python3.11
       Timeout: 300
-      FunctionName: !Join ['-', ['cs-abi-RegistrationLambda', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      FunctionName:
+        !Join [
+          "-",
+          [
+            "cs-abi-RegistrationLambda",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Code:
         S3Bucket: !Ref StagingS3Bucket
         S3Key: !Sub ${SourceS3BucketNamePrefix}/lambda_functions/packages/register-organization-v2/lambda.zip
 
   TriggerRegisterAccountLambda:
-    Type: 'Custom::TriggerLambda'
+    Type: "Custom::TriggerLambda"
     DependsOn:
       - LambdaCrowdStrikeRegistrationRole
       - CrowdStrikeSecrets
@@ -1125,7 +1366,7 @@ Resources:
       ServiceToken: !GetAtt
         - RegisterAccountLambda
         - Arn
-      ExcludeRegions: !If [ ExcludeRegionsEmpty, 'none', !Ref ExcludeRegions ]
+      ExcludeRegions: !If [ExcludeRegionsEmpty, "none", !Ref ExcludeRegions]
 
   # Staging S3 Bucket
   StagingS3Bucket:
@@ -1142,7 +1383,19 @@ Resources:
           - id: CKV_AWS_18
             comment: S3 access logs intentionally not enabled
     Properties:
-      BucketName: !Join ['-', ['cs-abi', !Ref AWS::AccountId, !Ref AWS::Region, !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      BucketName:
+        !Join [
+          "-",
+          [
+            "cs-abi",
+            !Ref AWS::AccountId,
+            !Ref AWS::Region,
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
@@ -1173,18 +1426,34 @@ Resources:
           - Sid: AllowDeploymentRoleGetObject
             Effect: Allow
             Action: s3:GetObject
-            Principal: '*'
+            Principal: "*"
             Resource: !Sub arn:${AWS::Partition}:s3:::${StagingS3Bucket}/*
             Condition:
               ArnLike:
                 aws:PrincipalArn:
-                  - !Join ['', ['arn:', !Ref AWS::Partition, ':iam::', !Ref AWS::AccountId, ':role/cs-abi-StackSetExecRole-', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+                  - !Join [
+                      "",
+                      [
+                        "arn:",
+                        !Ref AWS::Partition,
+                        ":iam::",
+                        !Ref AWS::AccountId,
+                        ":role/cs-abi-StackSetExecRole-",
+                        !Select [
+                          4,
+                          !Split [
+                            "-",
+                            !Select [2, !Split ["/", !Ref AWS::StackId]],
+                          ],
+                        ],
+                      ],
+                    ]
                   - !Sub arn:${AWS::Partition}:iam::*:role/stacksets-exec-*
 
           - Sid: DenyExternalPrincipals
             Effect: Deny
-            Action: 's3:*'
-            Principal: '*'
+            Action: "s3:*"
+            Principal: "*"
             Resource:
               - !Sub arn:${AWS::Partition}:s3:::${StagingS3Bucket}
               - !Sub arn:${AWS::Partition}:s3:::${StagingS3Bucket}/*
@@ -1194,8 +1463,8 @@ Resources:
 
           - Sid: SecureTransport
             Effect: Deny
-            Action: 's3:*'
-            Principal: '*'
+            Action: "s3:*"
+            Principal: "*"
             Resource:
               - !Sub arn:${AWS::Partition}:s3:::${StagingS3Bucket}
               - !Sub arn:${AWS::Partition}:s3:::${StagingS3Bucket}/*
@@ -1207,9 +1476,9 @@ Resources:
   CopyZips:
     Type: Custom::CopyZips
     Properties:
-      ServiceToken: !GetAtt 'CopyZipsFunction.Arn'
-      DestBucket: !Ref 'StagingS3Bucket'
-      SourceBucket: !Ref 'SourceS3BucketName'
+      ServiceToken: !GetAtt "CopyZipsFunction.Arn"
+      DestBucket: !Ref "StagingS3Bucket"
+      SourceBucket: !Ref "SourceS3BucketName"
       Prefix: !Sub ${SourceS3BucketNamePrefix}/
       Objects:
         - lambda_functions/packages/register-organization-v2/lambda.zip
@@ -1222,46 +1491,56 @@ Resources:
   CopyZipsRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !Join ['-', ['cs-abi-CopyZipsRole', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      RoleName:
+        !Join [
+          "-",
+          [
+            "cs-abi-CopyZipsRole",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       PermissionsBoundary:
         Fn::If:
           - SetPermissionsBoundary
-          - !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}'
+          - !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}"
           - Ref: AWS::NoValue
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
       ManagedPolicyArns:
-        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - !Sub "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
       Path: /
       Policies:
         - PolicyName: lambda-copier
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Effect: Allow
                 Action:
                   - s3:GetObject
                   - s3:GetObjectTagging
                 Resource:
-                  - !Sub 'arn:${AWS::Partition}:s3:::${SourceS3BucketName}/'
-                  - !Sub 'arn:${AWS::Partition}:s3:::${SourceS3BucketName}/${SourceS3BucketNamePrefix}/*'
+                  - !Sub "arn:${AWS::Partition}:s3:::${SourceS3BucketName}/"
+                  - !Sub "arn:${AWS::Partition}:s3:::${SourceS3BucketName}/${SourceS3BucketNamePrefix}/*"
               - Effect: Allow
                 Action:
                   - s3:PutObject
                   - s3:DeleteObject
                   - s3:PutObjectTagging
                 Resource:
-                  - !Sub 'arn:${AWS::Partition}:s3:::${StagingS3Bucket}/'
-                  - !Sub 'arn:${AWS::Partition}:s3:::${StagingS3Bucket}/${SourceS3BucketNamePrefix}/*'
+                  - !Sub "arn:${AWS::Partition}:s3:::${StagingS3Bucket}/"
+                  - !Sub "arn:${AWS::Partition}:s3:::${StagingS3Bucket}/${SourceS3BucketNamePrefix}/*"
               - Effect: Allow
                 Action:
                   - s3:ListAllMyBuckets
-                Resource: '*'
+                Resource: "*"
 
   CopyZipsFunction:
     Metadata:
@@ -1283,12 +1562,22 @@ Resources:
             comment: Lambda does not need to communicate with VPC resources.
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: !Join ['-', ['cs-abi-CopyZipsLambda', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      FunctionName:
+        !Join [
+          "-",
+          [
+            "cs-abi-CopyZipsLambda",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Description: Copies objects from a source S3 bucket to a destination
       Handler: index.handler
       Runtime: python3.9
       MemorySize: 128
-      Role: !GetAtt 'CopyZipsRole.Arn'
+      Role: !GetAtt "CopyZipsRole.Arn"
       Timeout: 240
       Code:
         ZipFile: |
@@ -1350,7 +1639,7 @@ Resources:
   # Org Id Lambda
   OrgIdLambdaCustomResource:
     Type: Custom::LambdaCustomResource
-    Version: '1.0'
+    Version: "1.0"
     Properties:
       ServiceToken: !GetAtt OrgIdLambdaFunction.Arn
 
@@ -1377,7 +1666,17 @@ Resources:
             comment: Environment variables are not sensitive.
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: !Join ['-', ['cs-abi-OrgIdLambda', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      FunctionName:
+        !Join [
+          "-",
+          [
+            "cs-abi-OrgIdLambda",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Description: Get AWS Organization ID
       Handler: organizations.lambda_handler
       Role: !GetAtt OrgIdLambdaRole.Arn
@@ -1402,13 +1701,23 @@ Resources:
           - id: W28
             reason: The role name is defined to identify automation resources
     Properties:
-      RoleName: !Join ['-', ['cs-abi-OrgIdRole', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      RoleName:
+        !Join [
+          "-",
+          [
+            "cs-abi-OrgIdRole",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       PermissionsBoundary:
         Fn::If:
           - SetPermissionsBoundary
-          - !Sub 'arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}'
+          - !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:policy/${PermissionsBoundary}"
           - Ref: AWS::NoValue
-      Description: 'Role for cs-abi-OrgId Lambda function'
+      Description: "Role for cs-abi-OrgId Lambda function"
       AssumeRolePolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -1427,7 +1736,7 @@ Resources:
                 Action:
                   - organizations:DescribeOrganization
                   - organizations:ListParents
-                Resource: '*'
+                Resource: "*"
         - PolicyName: CloudWatchLogGroup
           PolicyDocument:
             Version: 2012-10-17
@@ -1438,11 +1747,31 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: !Join ['', ['arn:', !Ref AWS::Partition, ':logs:', !Ref AWS::Region, ':', !Ref AWS::AccountId, ':log-group:/aws/lambda/cs-abi-OrgIdLambda-', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]], ':log-stream:*' ]]
+                Resource:
+                  !Join [
+                    "",
+                    [
+                      "arn:",
+                      !Ref AWS::Partition,
+                      ":logs:",
+                      !Ref AWS::Region,
+                      ":",
+                      !Ref AWS::AccountId,
+                      ":log-group:/aws/lambda/cs-abi-OrgIdLambda-",
+                      !Select [
+                        4,
+                        !Split [
+                          "-",
+                          !Select [2, !Split ["/", !Ref AWS::StackId]],
+                        ],
+                      ],
+                      ":log-stream:*",
+                    ],
+                  ]
 
   # EKS Protection
   RootRolesStack:
-    Type: 'AWS::CloudFormation::Stack'
+    Type: "AWS::CloudFormation::Stack"
     Condition: EnableEKSProtection
     DeletionPolicy: Delete
     UpdateReplacePolicy: Delete
@@ -1462,7 +1791,17 @@ Resources:
     DependsOn: RootRolesStack
     Type: AWS::CloudFormation::StackSet
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-EKSTargetRolesStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-EKSTargetRolesStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Capabilities:
         - CAPABILITY_NAMED_IAM
       Parameters:
@@ -1479,7 +1818,7 @@ Resources:
         - ParameterKey: PermissionsBoundary
           ParameterValue: !Ref PermissionsBoundary
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: false
@@ -1497,7 +1836,7 @@ Resources:
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/eks-target-roles-stackset.yml
 
   RootEKSProtectionStack:
-    Type: 'AWS::CloudFormation::Stack'
+    Type: "AWS::CloudFormation::Stack"
     Condition: EnableEKSProtection
     DependsOn: EKSTargetRolesStackSet
     DeletionPolicy: Delete
@@ -1524,18 +1863,28 @@ Resources:
         CodeBuildProjectName: !Ref CodeBuildProjectName
         CodeBuildRoleName: !Ref CodeBuildRoleName
         SourceS3BucketNamePrefix: !Ref SourceS3BucketNamePrefix
-        VpcCIDR: '10.192.0.0/16'
-        PublicSubnet1CIDR: '10.192.10.0/24'
-        PublicSubnet2CIDR: '10.192.11.0/24'
-        PrivateSubnet1CIDR: '10.192.20.0/24'
-        PrivateSubnet2CIDR: '10.192.21.0/24'
+        VpcCIDR: "10.192.0.0/16"
+        PublicSubnet1CIDR: "10.192.10.0/24"
+        PublicSubnet2CIDR: "10.192.11.0/24"
+        PrivateSubnet1CIDR: "10.192.20.0/24"
+        PrivateSubnet2CIDR: "10.192.21.0/24"
 
   EKSEventBridgeStackSet:
     Condition: EnableEKSProtection
     DependsOn: RootEKSProtectionStack
     Type: AWS::CloudFormation::StackSet
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-EKSEBStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-EKSEBStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Parameters:
         - ParameterKey: EventBusName
           ParameterValue: !Ref EventBusName
@@ -1546,7 +1895,7 @@ Resources:
         - ParameterKey: EventBridgeRoleName
           ParameterValue: !Ref EventBridgeRoleName
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: true
@@ -1566,7 +1915,17 @@ Resources:
     Condition: EnableECRRegistration
     Type: AWS::CloudFormation::StackSet
     Properties:
-      StackSetName: !Join ['-', ['cs-abi-ECRStackSet', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+      StackSetName:
+        !Join [
+          "-",
+          [
+            "cs-abi-ECRStackSet",
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ],
+          ],
+        ]
       Capabilities:
         - CAPABILITY_NAMED_IAM
       Parameters:
@@ -1575,7 +1934,17 @@ Resources:
         - ParameterKey: SourceS3BucketNamePrefix
           ParameterValue: !Ref SourceS3BucketNamePrefix
         - ParameterKey: SecretsManagerSecretName
-          ParameterValue: !Join ['-', ['cs-abi-FalconAPI-ECR', !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]]]
+          ParameterValue:
+            !Join [
+              "-",
+              [
+                "cs-abi-FalconAPI-ECR",
+                !Select [
+                  4,
+                  !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+                ],
+              ],
+            ]
         - ParameterKey: PermissionsBoundary
           ParameterValue: !Ref PermissionsBoundary
         - ParameterKey: FalconClientID
@@ -1587,9 +1956,13 @@ Resources:
         - ParameterKey: ECRLambdaName
           ParameterValue: !Ref ECRLambdaName
         - ParameterKey: StackId
-          ParameterValue: !Select [4, !Split ['-', !Select [2, !Split ['/', !Ref AWS::StackId]]]]
+          ParameterValue:
+            !Select [
+              4,
+              !Split ["-", !Select [2, !Split ["/", !Ref AWS::StackId]]],
+            ]
       PermissionModel: SERVICE_MANAGED
-      CallAs: !If [ IsDelegatedAdmin, 'DELEGATED_ADMIN', 'SELF' ]
+      CallAs: !If [IsDelegatedAdmin, "DELEGATED_ADMIN", "SELF"]
       AutoDeployment:
         Enabled: true
         RetainStacksOnAccountRemoval: true
@@ -1602,11 +1975,9 @@ Resources:
         - DeploymentTargets:
             AccountFilterType: NONE
             OrganizationalUnitIds: !Ref DeploymentScope
-          Regions: 
+          Regions:
             - !Ref AWS::Region
       TemplateURL: !Sub https://${SourceS3BucketName}.s3.${S3BucketRegion}.amazonaws.com/${SourceS3BucketNamePrefix}/templates/ecr-registration-stackset.yml
-
-
 
 Outputs:
   CSBucket:

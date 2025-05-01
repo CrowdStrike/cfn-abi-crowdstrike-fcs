@@ -166,7 +166,7 @@
         },
         "ManagedPolicyArns": [
           {
-            "Fn::Sub": "arn:${AWS::Partition}:iam::aws-us-gov:policy/SecurityAudit"
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/SecurityAudit"
           }
         ],
         "Policies": [
